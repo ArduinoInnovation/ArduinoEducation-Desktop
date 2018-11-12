@@ -1,0 +1,18 @@
+.newModule {
+  height: 100%;
+  position: relative;
+  .bottomSection {
+    height: 100%;
+    display: flex;
+    .leftSection {
+      width: 300px;
+      background: white;
+      .nameSection {
+        padding: 0 0 20px;
+      }
+    }
+    .rightSection {
+      flex: 1;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+.newProcess {
+  height: 100%;
+  position: relative;
+  .bottomSection {
+    height: 100%;
+    display: flex;
+    .leftSection {
+      width: 300px;
+      background: white;
+      border-right: 1px solid rgb(184, 184, 184);
+      .nameSection {
+        display: flex;
+        flex-direction: column;
+        padding: 0 0 20px;
+        .listSection {
+          flex: 1;
+          height: calc(100vh - 175px);
+          overflow-y: auto;
+        }
+      }
+    }
+    .rightSection {
+      flex: 1;
+    }
+  }
+}
