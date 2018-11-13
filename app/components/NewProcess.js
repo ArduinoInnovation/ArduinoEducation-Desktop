@@ -19,6 +19,7 @@ import type { RootStateType } from '../reducers/types';
 import * as CodingActions from '../actions/coding';
 import Styles from './NewProcess.scss';
 import generateId from '../utils/idGenerator';
+import CodeEditor from './CodeEditor';
 
 const styles = theme => ({
   button: {
@@ -140,7 +141,9 @@ class NewProcess extends Component<Props> {
               </div>
             </div>
           </div>
-          <div className={Styles.rightSection} />
+          <div className={Styles.rightSection}>
+            <CodeEditor />
+          </div>
         </div>
       </div>
     );
