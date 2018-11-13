@@ -1,0 +1,11 @@
+.board {
+  width: 80%;
+  margin: 0 auto;
+  height: calc(100vh - 64px);
+  .item {
+    margin-top: 16px;
+    .itemPaper {
+      padding: 16px;
+    }
+  }
+}

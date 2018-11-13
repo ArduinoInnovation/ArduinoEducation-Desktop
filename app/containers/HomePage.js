@@ -10,16 +10,19 @@ import Button from '@material-ui/core/Button/Button';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List/List';
 import ListItem from '@material-ui/core/ListItem/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
-import Divider from '@material-ui/core/Divider';
-import InboxIcon from '@material-ui/icons/Inbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import AddIcon from '@material-ui/icons/Add';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import ArrowForward from '@material-ui/icons/ArrowForward';
+import Chip from '@material-ui/core/Chip/Chip';
 import * as CodingActions from '../actions/coding';
 import type { RootStateType } from '../reducers/types';
 import NewSectionDialog from '../components/NewSectionDialog';
 import type { CodingProps } from '../actions/coding/types';
+import Styles from '../components/NewModule.scss';
+import DragBoard from '../components/DragBoard';
+import generateId from '../utils/idGenerator';
 
 type Props = CodingProps & {
   classes: Class
@@ -46,7 +49,7 @@ const styles = theme => ({
     background: 'white'
   },
   right: {
-    height: '100%',
+    height: 'calc(100vh - 48px)',
     flexGrow: 1
   },
   main: {
@@ -63,6 +66,7 @@ const styles = theme => ({
 
 class HomePage extends Component<Props> {
   props: Props;
+
   //
   // componentDidMount() {
   //   this.props.addLine({ id: '1', name: '2' });
@@ -78,9 +82,34 @@ class HomePage extends Component<Props> {
     changeDialog(false);
   };
 
+  onListModuleClick = item => () => {
+    const { addLine } = this.props;
+    addLine({
+      id: generateId(),
+      stateId: generateId(),
+      module: item,
+      content: (
+        <div>
+          <Typography variant="h5" component="h3">
+            {item.name}
+          </Typography>
+          <div>
+            {item.processes.map(eachProcess => (
+              <Chip
+                key={eachProcess.stateId}
+                label={eachProcess.name}
+                style={{ marginRight: 16 }}
+              />
+            ))}
+          </div>
+        </div>
+      )
+    });
+  };
+
   render() {
-    const { coding, classes } = this.props;
-    const { isCodingDialogOpen } = coding;
+    const { coding, classes, setLines } = this.props;
+    const { isCodingDialogOpen, modules, lines } = coding;
     return (
       <div className={classes.basic}>
         <div className={classes.root}>
@@ -103,30 +132,34 @@ class HomePage extends Component<Props> {
               onClick={this.handleClickOpen}
             >
               <AddIcon className={classes.extendedIcon} />
-              新增步骤
+              NEW ACTION
             </Button>
-            <List component="nav">
-              <ListItem button>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Inbox" />
-              </ListItem>
-              <ListItem button>
-                <ListItemIcon>
-                  <DraftsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Drafts" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List component="nav">
-              <ListItem button>
-                <ListItemText primary="Trash" />
-              </ListItem>
+            <List>
+              {modules.map(item => (
+                <ListItem
+                  onClick={this.onListModuleClick(item)}
+                  key={item.id}
+                  divider
+                  button
+                >
+                  <ListItemText primary={item.name} />
+                  <ListItemSecondaryAction>
+                    <IconButton aria-label="Delete">
+                      <ArrowForward />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
             </List>
           </section>
-          <section className={classes.right} />
+          <section className={classes.right}>
+            <div className={Styles.rightSection}>
+              <DragBoard
+                processItems={lines}
+                reorderProcess={items => setLines(items)}
+              />
+            </div>
+          </section>
         </section>
         <NewSectionDialog
           open={isCodingDialogOpen}

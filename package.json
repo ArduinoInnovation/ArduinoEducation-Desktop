@@ -198,7 +198,7 @@
     "cross-spawn": "^6.0.5",
     "css-loader": "^1.0.1",
     "detect-port": "^1.2.3",
-    "electron": "^2.0.6",
+    "electron": "^3.0.9",
     "electron-builder": "^20.28.4",
     "electron-devtools-installer": "^2.2.4",
     "enzyme": "^3.3.0",
@@ -261,12 +261,12 @@
     "devtron": "^1.4.0",
     "electron-debug": "^2.0.0",
     "electron-log": "^2.2.17",
-    "electron-updater": "^3.1.6",
+    "electron-updater": "^3.2.3",
     "history": "^4.7.2",
     "immutable": "^4.0.0-rc.12",
-    "react": "^16.6.2",
+    "react": "^16.4.1",
     "react-beautiful-dnd": "^9.0.2",
-    "react-dom": "^16.6.2",
+    "react-dom": "^16.4.1",
     "react-hot-loader": "^4.3.4",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
@@ -277,10 +277,9 @@
     "slate-react": "^0.21.12",
     "source-map-support": "^0.5.6"
   },
-  "devEngines": {
-    "node": ">=7.x",
-    "npm": ">=4.x",
-    "yarn": ">=0.21.3"
+  "engines": {
+    "node": ">=10.x <11",
+    "yarn": ">=1.x"
   },
   "collective": {
     "url": "https://opencollective.com/electron-react-boilerplate-594"

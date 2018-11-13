@@ -69,8 +69,8 @@ class NewSectionDialog extends Component<Props> {
                 onChange={this.handleChange}
                 className={classes.flex}
               >
-                <Tab value="one" label="新增过程" />
-                <Tab value="two" label="新增模块" />
+                <Tab value="one" label="PROCESS" />
+                <Tab value="two" label="MODULE" />
               </Tabs>
               <div style={{ width: 48 }} />
             </Toolbar>

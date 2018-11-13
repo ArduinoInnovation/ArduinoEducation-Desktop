@@ -1,8 +1,9 @@
-import React from 'react';
+// @flow
+import React, { Component } from 'react';
 import { Editor } from 'slate-react';
 import { Value } from 'slate';
 
-const initialValue = Value.fromJSON({
+export const initialValue = Value.fromJSON({
   document: {
     nodes: [
       {
@@ -13,7 +14,7 @@ const initialValue = Value.fromJSON({
             object: 'text',
             leaves: [
               {
-                text: 'A line of text in a paragraph.'
+                text: ''
               }
             ]
           }
@@ -23,47 +24,38 @@ const initialValue = Value.fromJSON({
   }
 });
 
-export default class CodeEditor extends React.Component {
-  state = {
-    value: initialValue
-  };
+type Props = {
+  onChange: (event: any) => void,
+  editorValue: any
+};
+
+export default class CodeEditor extends Component<Props> {
+  props: Props;
 
   ref = editor => {
     this.editor = editor;
   };
 
-  // On change, update the app's React state with the new editor value.
-  onChange = ({ value }) => {
-    this.setState({ value });
-  };
-
-  onKeyDown = (event, editor, next) => {
-    const { value } = editor;
-    const string = 'abc';
-    const texts = value.document.getTexts();
-    console.log(value.document);
+  onKeyUp = (event, editor, next) => {
+    const {
+      value: { document }
+    } = editor;
+    const string = /(?<!\\)\$([^$]|(\\\$))*[^\\]?\$/g;
+    const texts = document.getTexts();
     const decorations = [];
 
     texts.forEach(node => {
       const { key, text } = node;
-      const parts = text.split(string);
-      let offset = 0;
-
-      parts.forEach((part, i) => {
-        if (i !== 0) {
-          decorations.push({
-            anchor: { key, offset: offset - string.length },
-            focus: { key, offset },
-            mark: { type: 'highlight' }
-          });
-        }
-
-        offset = offset + part.length + string.length;
-      });
+      let part;
+      while ((part = string.exec(text)) !== null) {
+        decorations.push({
+          anchor: { key, offset: part.index },
+          focus: { key, offset: part.index + part[0].length },
+          mark: { type: 'highlight' }
+        });
+      }
     });
 
-    // Make the change to decorations without saving it into the undo history,
-    // so that there isn't a confusing behavior when undoing.
     editor.withoutSaving(() => {
       editor.setDecorations(decorations);
     });
@@ -87,15 +79,20 @@ export default class CodeEditor extends React.Component {
   };
 
   render() {
-    const { value } = this.state;
+    const { editorValue, onChange } = this.props;
     return (
       <div>
         <Editor
+          style={{
+            height: 'calc(100vh - 48px)',
+            padding: 20,
+            backgroundColor: '#e2e9ff'
+          }}
           ref={this.ref}
-          value={value}
+          value={editorValue}
           renderMark={this.renderMark}
-          onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
+          onChange={onChange}
+          onKeyUp={this.onKeyUp}
         />
       </div>
     );

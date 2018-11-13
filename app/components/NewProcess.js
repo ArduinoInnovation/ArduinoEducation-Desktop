@@ -19,7 +19,7 @@ import type { RootStateType } from '../reducers/types';
 import * as CodingActions from '../actions/coding';
 import Styles from './NewProcess.scss';
 import generateId from '../utils/idGenerator';
-import CodeEditor from './CodeEditor';
+import CodeEditor, { initialValue } from './CodeEditor';
 
 const styles = theme => ({
   button: {
@@ -47,7 +47,8 @@ class NewProcess extends Component<Props> {
 
   state = {
     name: '',
-    params: []
+    params: [],
+    editorValue: initialValue
   };
 
   handleChange = event => {
@@ -79,13 +80,35 @@ class NewProcess extends Component<Props> {
     });
   };
 
+  deleteParam = id => {
+    const { params } = this.state;
+    this.setState({
+      params: params.filter(param => param.id !== id)
+    });
+  };
+
+  onChange = ({ value }) => {
+    this.setState({ editorValue: value });
+  };
+
+  onSave = () => {
+    const { addProcess, changeDialog } = this.props;
+    addProcess(this.state);
+    changeDialog(false);
+  };
+
   render() {
     const { classes } = this.props;
-    const { name = '', params = [] } = this.state;
+    const { name = '', params = [], editorValue } = this.state;
     return (
       <div className={Styles.newProcess}>
         <div className={classes.button}>
-          <Button variant="fab" color="primary" aria-label="Add">
+          <Button
+            onClick={this.onSave}
+            variant="fab"
+            color="primary"
+            aria-label="Add"
+          >
             <SaveIcon />
           </Button>
         </div>
@@ -94,7 +117,7 @@ class NewProcess extends Component<Props> {
             <div className={Styles.nameSection}>
               <TextField
                 id="outlined-name"
-                label="过程名称"
+                label="Process name"
                 fullWidth
                 // className={classes.textField}
                 value={name}
@@ -103,14 +126,12 @@ class NewProcess extends Component<Props> {
                 variant="filled"
               />
               <div className={Styles.listSection}>
-                <List subheader={<ListSubheader>参数</ListSubheader>}>
-                  {params.map((param, index) => (
+                <List subheader={<ListSubheader>Params</ListSubheader>}>
+                  {params.map(param => (
                     <ListItem key={param.id}>
                       <FormControl fullWidth>
                         <InputLabel htmlFor="adornment-password">
-                          参数
-                          {index + 1}
-                          名称
+                          Params name
                         </InputLabel>
                         <Input
                           id="adornment-password"
@@ -122,7 +143,10 @@ class NewProcess extends Component<Props> {
                           variant="standard"
                           endAdornment={
                             <InputAdornment position="end">
-                              <IconButton aria-label="Delete">
+                              <IconButton
+                                onClick={() => this.deleteParam(param.id)}
+                                aria-label="Delete"
+                              >
                                 <DeleteIcon />
                               </IconButton>
                             </InputAdornment>
@@ -142,7 +166,7 @@ class NewProcess extends Component<Props> {
             </div>
           </div>
           <div className={Styles.rightSection}>
-            <CodeEditor />
+            <CodeEditor editorValue={editorValue} onChange={this.onChange} />
           </div>
         </div>
       </div>
