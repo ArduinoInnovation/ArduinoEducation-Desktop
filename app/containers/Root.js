@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
@@ -16,14 +16,14 @@ export default class Root extends Component<Props> {
   render() {
     const { store, history } = this.props;
     return (
-      <Fragment style={{ height: '100%' }}>
+      <div style={{ height: '100%' }}>
         <CssBaseline />
         <Provider store={store}>
           <ConnectedRouter history={history}>
             <Routes />
           </ConnectedRouter>
         </Provider>
-      </Fragment>
+      </div>
     );
   }
 }

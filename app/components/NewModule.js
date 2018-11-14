@@ -19,6 +19,7 @@ import * as CodingActions from '../actions/coding';
 import type { RootStateType } from '../reducers/types';
 import type { CodingProps } from '../actions/coding/types';
 import generateId from '../utils/idGenerator';
+import Empty from '../../resources/undraw_no_data_qbuo.svg';
 
 const styles = theme => ({
   button: {
@@ -160,22 +161,36 @@ class NewModule extends Component<Props> {
                 variant="filled"
               />
             </div>
-            <List>
-              {process.map(item => (
-                <ListItem
-                  onClick={this.onListProcessClick(item)}
-                  key={item.id}
-                  divider
-                  button
-                >
-                  <ListItemText primary={item.name} />
-                  <ListItemSecondaryAction>
-                    <IconButton aria-label="Delete">
-                      <ArrowForward />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
+            <List style={{ height: 'calc(100vh - 100px)', overflowY: 'auto' }}>
+              {process.length === 0 ? (
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <img
+                    alt=""
+                    style={{ margin: '0 auto', paddingTop: 100 }}
+                    src={Empty}
+                    width={120}
+                  />
+                  <Typography variant="subheading" align="center">
+                    Add process first
+                  </Typography>
+                </div>
+              ) : (
+                process.map(item => (
+                  <ListItem
+                    onClick={this.onListProcessClick(item)}
+                    key={item.id}
+                    divider
+                    button
+                  >
+                    <ListItemText primary={item.name} />
+                    <ListItemSecondaryAction>
+                      <IconButton aria-label="Delete">
+                        <ArrowForward />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))
+              )}
             </List>
           </div>
           <div className={Styles.rightSection}>

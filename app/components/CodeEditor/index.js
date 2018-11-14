@@ -1,28 +1,9 @@
 // @flow
 import React, { Component } from 'react';
 import { Editor } from 'slate-react';
-import { Value } from 'slate';
+import Plain from 'slate-plain-serializer';
 
-export const initialValue = Value.fromJSON({
-  document: {
-    nodes: [
-      {
-        object: 'block',
-        type: 'paragraph',
-        nodes: [
-          {
-            object: 'text',
-            leaves: [
-              {
-                text: ''
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-});
+export const initialValue = Plain.deserialize('');
 
 type Props = {
   onChange: (event: any) => void,
@@ -93,6 +74,7 @@ export default class CodeEditor extends Component<Props> {
           renderMark={this.renderMark}
           onChange={onChange}
           onKeyUp={this.onKeyUp}
+          placeholder="Add code here"
         />
       </div>
     );

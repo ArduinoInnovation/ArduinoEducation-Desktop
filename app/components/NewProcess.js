@@ -14,6 +14,7 @@ import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 import Input from '@material-ui/core/Input/Input';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import FormControl from '@material-ui/core/FormControl/FormControl';
+import Plain from 'slate-plain-serializer';
 import type { CodingProps } from '../actions/coding/types';
 import type { RootStateType } from '../reducers/types';
 import * as CodingActions from '../actions/coding';
@@ -93,7 +94,11 @@ class NewProcess extends Component<Props> {
 
   onSave = () => {
     const { addProcess, changeDialog } = this.props;
-    addProcess(this.state);
+    const { editorValue } = this.state;
+    addProcess({
+      ...this.state,
+      plain: Plain.serialize(editorValue)
+    });
     changeDialog(false);
   };
 
@@ -160,7 +165,7 @@ class NewProcess extends Component<Props> {
 
               <div style={{ padding: '16px 26px' }}>
                 <Button onClick={this.createParam} variant="outlined" fullWidth>
-                  新增参数
+                  NEW PARAMS
                 </Button>
               </div>
             </div>
