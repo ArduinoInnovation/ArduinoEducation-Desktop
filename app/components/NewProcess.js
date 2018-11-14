@@ -163,7 +163,7 @@ class NewProcess extends Component<Props> {
                 </List>
               </div>
 
-              <div style={{ padding: '16px 26px' }}>
+              <div style={{ padding: '16px 20px' }}>
                 <Button onClick={this.createParam} variant="outlined" fullWidth>
                   NEW PARAMS
                 </Button>
