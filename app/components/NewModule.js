@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton/IconButton';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 // import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography/Typography';
+import ClearIcon from '@material-ui/icons/Clear';
 import DragBoard from './DragBoard';
 import Styles from './NewModule.scss';
 import * as CodingActions from '../actions/coding';
@@ -54,6 +55,11 @@ class NewModule extends Component<Props> {
     this.setState({ name: event.target.value });
   };
 
+  deleteProcess = id => {
+    const { processes } = this.state;
+    this.setState({ processes: processes.filter(item => item.stateId !== id) });
+  };
+
   onListProcessClick = processItem => () => {
     this.setState(prevState => {
       const { processes } = prevState;
@@ -65,7 +71,13 @@ class NewModule extends Component<Props> {
             stateId: nextProcessId,
             ...processItem,
             content: (
-              <div>
+              <div style={{ position: 'relative' }}>
+                <IconButton
+                  style={{ position: 'absolute', right: -10, top: -10 }}
+                  onClick={() => this.deleteProcess(nextProcessId)}
+                >
+                  <ClearIcon />
+                </IconButton>
                 <Typography variant="h5" component="h3">
                   {processItem.name}
                 </Typography>

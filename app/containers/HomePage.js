@@ -18,6 +18,7 @@ import ArrowForward from '@material-ui/icons/ArrowForward';
 import Chip from '@material-ui/core/Chip/Chip';
 import { remote } from 'electron';
 import fs from 'fs';
+import ClearIcon from '@material-ui/icons/Clear';
 import * as CodingActions from '../actions/coding';
 import type { RootStateType } from '../reducers/types';
 import NewSectionDialog from '../components/NewSectionDialog';
@@ -90,14 +91,26 @@ class HomePage extends Component<Props> {
     changeDialog(false);
   };
 
+  deleteLine = id => {
+    const { removeLine } = this.props;
+    removeLine(id);
+  };
+
   onListModuleClick = item => () => {
     const { addLine } = this.props;
+    const nextLineId = generateId();
     addLine({
-      id: generateId(),
-      stateId: generateId(),
+      id: nextLineId,
+      stateId: nextLineId,
       module: item,
       content: (
-        <div>
+        <div style={{ position: 'relative' }}>
+          <IconButton
+            style={{ position: 'absolute', right: -10, top: -10 }}
+            onClick={() => this.deleteLine(nextLineId)}
+          >
+            <ClearIcon />
+          </IconButton>
           <Typography variant="h5" component="h3">
             {item.name}
           </Typography>
